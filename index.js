@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({
-    intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] //Aggiungere GUILD_VOICE_STATES
+    intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"]
 })
 
 const { token, prefix } = require("./config.json")
@@ -24,12 +24,12 @@ client.on("messageCreate", message => {
     if (message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
         }
 
         let args = message.content.split(/\s+/)
@@ -49,59 +49,59 @@ client.on("messageCreate", message => {
     if (message.content == `${prefix}pause`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi essere in un canale vocale")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente utilizzato da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente utilizzato da un altro utente, attendere il termine del processo...")
         }
 
         try {
             distube.pause(message)
-                .catch(() => { return message.reply("Non c'è alcun brano in riproduzione o in pausa.") })
+                .catch(() => { return message.reply("🚫Non c'è alcun brano in riproduzione o in pausa.") })
         } catch {
-            return message.reply("Non c'è alcun brano in riproduzione o in pausa.")
+            return message.reply("🚫Non c'è alcun brano in riproduzione o in pausa.")
         }
 
-        message.reply("Il brano è stato messo in pausa correttamente.")
+        message.reply("✅Il brano è stato messo in pausa correttamente.")
     }
 
     if (message.content == `${prefix}resume`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
         }
 
         try {
             distube.resume(message)
-                .catch(() => { return message.reply("Nessuna canzone in riproduzione o canzone già in riproduzione.") })
+                .catch(() => { return message.reply("🚫Nessuna canzone in riproduzione o canzone già in riproduzione.") })
         } catch {
-            return message.reply("Nessuna canzone in riproduzione o canzone già in riproduzione.")
+            return message.reply("🚫Nessuna canzone in riproduzione o canzone già in riproduzione.")
         }
 
-        message.reply("Il brano ha ripreso l'esecuzione corretamente.")
+        message.reply("✅Il brano ha ripreso l'esecuzione correttamente.")
     }
 
     if (message.content == `${prefix}queue`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
         }
 
         let queue = distube.getQueue(message)
 
-        if (!queue) return message.reply("La coda dei brani è vuota.")
+        if (!queue) return message.reply("🚫La coda dei brani è vuota.")
 
         let totPage = Math.ceil(queue.songs.length / 10)
         let page = 1
@@ -116,6 +116,7 @@ client.on("messageCreate", message => {
         let embed = new Discord.MessageEmbed()
             .addField("Coda dei brani:", songsList)
             .setFooter({ text: `Pagina ${page}/${totPage}` })
+            .setColor("RANDOM")
 
         let button1 = new Discord.MessageButton()
             .setLabel("Indietro")
@@ -162,6 +163,7 @@ client.on("messageCreate", message => {
                     let embed = new Discord.MessageEmbed()
                         .addField("Queue", songsList)
                         .setFooter({ text: `Pagina ${page}/${totPage}` })
+                        .setColor("RANDOM")
 
                     let button1 = new Discord.MessageButton()
                         .setLabel("Indietro")
@@ -188,64 +190,64 @@ client.on("messageCreate", message => {
     if (message.content == `${prefix}skip`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         try {
             distube.skip(message)
-                .catch(() => { return message.channel.send("Nessun brano in riproduzione o successivo non presente.") })
+                .catch(() => { return message.channel.send("🚫Nessun brano in riproduzione o successivo non presente.") })
         } catch {
-            return message.reply("Nessun brano in riproduzione successivo non presente.")
+            return message.reply("🚫Nessun brano in riproduzione successivo non presente.")
         }
 
-        message.reply("Il brano è stato saltato correttamente.")
+        message.reply("✅Il brano è stato saltato correttamente.")
     }
 
     if (message.content == `${prefix}previous`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
         }
 
         try {
             distube.previous(message)
-                .catch(() => { return message.reply("Nessuna canzone in riproduzione o canzone precedente non presente") })
+                .catch(() => { return message.reply("🚫Nessuna canzone in riproduzione o canzone precedente non presente") })
         } catch {
-            return message.reply("Nessun brano in riproduzione o precedente non presente")
+            return message.reply("🚫Nessun brano in riproduzione o precedente non presente")
         }
 
-        message.reply("Caricament del brano precedente...")
+        message.reply("Caricamento del brano precedente...")
     }
 
     if (message.content == `${prefix}stop`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
-            return message.reply("Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
         }
 
         const voiceChannelBot = message.guild.channels.cache.find(x => x.type == "GUILD_VOICE" && x.members.has(client.user.id))
         if (voiceChannelBot && voiceChannel.id != voiceChannelBot.id) {
-            return message.reply("Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
+            return message.reply("❌Il bot è momentaneamente in utilizzo da un altro utente, attendere il termine del processo...")
         }
 
         try {
             distube.stop(message)
-                .catch(() => { return message.reply("Non c'è alcun brano in esecuzione.") })
+                .catch(() => { return message.reply("🚫Non c'è alcun brano in esecuzione.") })
         } catch {
-            return message.reply("Non c'è alcun brano in riproduzione")
+            return message.reply("🚫Non c'è alcun brano in riproduzione")
         }
 
-        message.reply("La coda è stata messa in pausa correttamente.")
+        message.reply("✅La coda è stata messa in pausa correttamente.")
     }
 })
 
@@ -253,6 +255,7 @@ distube.on("addSong", (queue, song) => {
     let embed = new Discord.MessageEmbed()
         .setTitle("Coda dei brani")
         .addField("Brano aggiunto in coda:", song.name)
+        .setColor("RANDOM")
 
     queue.textChannel.send({ embeds: [embed] })
 })
@@ -262,12 +265,13 @@ distube.on("playSong", (queue, song) => {
         .setTitle("Inizializzazione...")
         .addField("Brano in riproduzione:", song.name)
         .addField("Richiesto:", song.user.toString())
+        .setColor("RANDOM")
 
     queue.textChannel.send({ embeds: [embed] })
 })
 
 distube.on("searchNoResult", (message, query) => {
-    message.reply("Errore: brano non trovato.")
+    message.reply("❌Errore: brano non trovato.")
 })
 
 client.login(process.env.token);
