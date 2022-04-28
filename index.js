@@ -208,6 +208,29 @@ client.on("messageCreate", message => {
         message.reply("✅Il brano è stato saltato correttamente.")
     }
 
+    if(message.content == `${prefix}remove`){
+        const queue = message.client.queue.get(message.guild.id)
+        if(isNaN(parseInt(args[0])) || !args[0]){
+            return message.reply("🎤Devi necessariamente connetterti in un canale vocale per far partire la musica.")
+        }
+
+        if(!queue) return message.reply("❌Impossibile rimuovere il brano indicato: nessun brano in riproduzione.") // If No Song Is Being Played.
+        let remove = args[0] - 1
+        let arr = queue.songs
+        if(remove > arr.length || remove < 0 ) { return message.reply("Errore: inserire un numero valido.") } // If Number Is Not Their In Queue Or -ve.
+
+        const embed = new MessageEmbed()
+        .setTitle('❌Brano rimosso')
+        .setColor('RANDOM')
+        .addField(`Rimosso: **${arr[remove].title}**`, '❌')
+        .addField('Rimosso da:', message.author)
+        message.channel.send(embed)
+
+        if(remove === 0) { skip.execute(message, ags) }
+        else { arr.splice(remove, 1) }
+        message.client.queue.set(message.guild.id, serverQueue)
+    }
+
     if (message.content == `${prefix}previous`) {
         const voiceChannel = message.member.voice.channel
         if (!voiceChannel) {
